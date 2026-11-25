@@ -26,15 +26,15 @@ function doPost(e) {
       dados = e.parameter;
     }
 
-    // Valida campos obrigatórios
-    if (!dados.eleitor || !dados.candidato) {
+    // Valida campos obrigatórios (apenas candidato, não há mais identificação de eleitor)
+    if (!dados.candidato) {
       return ContentService.createTextOutput(
-        JSON.stringify({ erro: 'Campos obrigatórios ausentes' })
+        JSON.stringify({ erro: 'Campo candidato é obrigatório' })
       ).setMimeType(ContentService.MimeType.JSON);
     }
 
     const registro = {
-      eleitor: dados.eleitor,
+      eleitor: dados.eleitor || '',
       candidato: dados.candidato,
       candidatoNome: dados.candidatoNome || '',
       timestamp: dados.timestamp || new Date().toISOString(),
