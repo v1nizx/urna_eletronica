@@ -1,6 +1,6 @@
 // ============================================================================
 // URNA ELETRÔNICA - PASCOM SÃO JOSÉ
-// Lógica da tela de votação
+// Lógica da tela de votação (sem identificação de eleitor)
 // ============================================================================
 
 // Carrega config (se existir). Caso contrário, usa valores padrão.
@@ -14,7 +14,6 @@ let CONFIG = window.CONFIG || {
 };
 
 let candidatos = [];
-let eleitorId = '';
 let candidatoSelecionado = null;
 
 // Elementos DOM
@@ -22,10 +21,6 @@ const telaInicial = document.getElementById('tela-inicial');
 const telaVotacao = document.getElementById('tela-votacao');
 const telaConfirmacao = document.getElementById('tela-confirmacao');
 const telaFim = document.getElementById('tela-fim');
-
-const inputEleitor = document.getElementById('eleitor-id');
-const btnIniciar = document.getElementById('btn-iniciar');
-const msgErro = document.getElementById('msg-erro');
 
 const listaCandidatos = document.getElementById('candidatos-lista');
 const btnVotar = document.getElementById('btn-votar');
@@ -43,16 +38,9 @@ const msgFim = document.getElementById('msg-fim');
 document.addEventListener('DOMContentLoaded', async () => {
   await carregarCandidatos();
 
-  btnIniciar.addEventListener('click', iniciarVotacao);
   btnVotar.addEventListener('click', irParaConfirmacao);
   btnConfirmar.addEventListener('click', confirmarVoto);
   btnCorrecao.addEventListener('click', () => mostrarTela(telaVotacao));
-
-  inputEleitor.addEventListener('input', () => {
-    msgErro.textContent = '';
-    btnIniciar.disabled = inputEleitor.value.trim().length < 3;
-  });
-  btnIniciar.disabled = true;
 });
 
 // --------------------------------------------------------------------------
@@ -77,11 +65,18 @@ function renderizarCandidatos() {
     card.className = 'candidato-card';
     card.dataset.numero = c.numero;
 
+    const fotoHtml = c.foto
+      ? `<img src="${c.foto}" alt="${c.nome}">`
+      : '<div style="width:64px;height:64px;border-radius:50%;background:#e2e8ea;margin:0 auto 10px"></div>';
+
+    const viceHtml = c.vice ? `<br><small>Vice: ${c.vice}</small>` : '';
+
     card.innerHTML = `
       <span class="numero">${c.numero}</span>
-      ${c.foto ? `<img src="${c.foto}" alt="${c.nome}">` : '<div style="width:70px;height:70px;border-radius:50%;background:#eee;margin:0 auto 8px"></div>'}
+      ${fotoHtml}
       <h3>${c.nome}</h3>
-      <p>${c.bio || ''}</p>
+      <p>${c.bio || c.cargo || ''}</p>
+      ${viceHtml}
     `;
 
     card.addEventListener('click', () => selecionarCandidato(c));
@@ -100,19 +95,7 @@ function selecionarCandidato(candidato) {
 // --------------------------------------------------------------------------
 // Fluxo de votação
 // --------------------------------------------------------------------------
-function iniciarVotacao() {
-  eleitorId = inputEleitor.value.trim();
-  if (eleitorId.length < 3) {
-    msgErro.textContent = 'Digite um identificador válido (mín. 3 caracteres).';
-    return;
-  }
-
-  // Verifica se eleitor já votou (modo demo: localStorage)
-  if (jaVotou(eleitorId)) {
-    msgErro.textContent = 'Este eleitor já realizou a votação.';
-    return;
-  }
-
+function irParaVotacao() {
   mostrarTela(telaVotacao);
 }
 
@@ -122,10 +105,6 @@ function irParaConfirmacao() {
   resumoVoto.innerHTML = `
     <h3>Resumo do seu voto</h3>
     <div class="resumo-item">
-      <span>Eleitor:</span>
-      <span class="valor">${eleitorId}</span>
-    </div>
-    <div class="resumo-item">
       <span>Cargo:</span>
       <span class="valor">${CONFIG.CARGO}</span>
     </div>
@@ -133,13 +112,18 @@ function irParaConfirmacao() {
       <span>Candidato:</span>
       <span class="valor">${candidatoSelecionado.nome} (${candidatoSelecionado.numero})</span>
     </div>
+    ${candidatoSelecionado.vice ? `
+    <div class="resumo-item">
+      <span>Vice:</span>
+      <span class="valor">${candidatoSelecionado.vice}</span>
+    </div>
+    ` : ''}
   `;
   mostrarTela(telaConfirmacao);
 }
 
 async function confirmarVoto() {
   const voto = {
-    eleitor: eleitorId,
     candidato: candidatoSelecionado.numero,
     candidatoNome: candidatoSelecionado.nome,
     timestamp: new Date().toISOString(),
@@ -160,7 +144,6 @@ async function confirmarVoto() {
       salvarVotoDemo(voto);
     }
 
-    marcarJaVotou(eleitorId);
     mostrarResultadoFinal(true);
   } catch (erro) {
     console.error(erro);
@@ -194,17 +177,6 @@ function mostrarResultadoFinal(sucesso) {
 // --------------------------------------------------------------------------
 // Controle de voto duplicado (modo demo)
 // --------------------------------------------------------------------------
-function jaVotou(id) {
-  const jaVotaram = JSON.parse(localStorage.getItem('urna_votaram') || '[]');
-  return jaVotaram.includes(id);
-}
-
-function marcarJaVotou(id) {
-  const jaVotaram = JSON.parse(localStorage.getItem('urna_votaram') || '[]');
-  jaVotaram.push(id);
-  localStorage.setItem('urna_votaram', JSON.stringify(jaVotaram));
-}
-
 function salvarVotoDemo(voto) {
   const votos = JSON.parse(localStorage.getItem('urna_votos_demo') || '[]');
   votos.push(voto);

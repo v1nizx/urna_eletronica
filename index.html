@@ -18,13 +18,13 @@
     </header>
 
     <div class="urna-body">
-      <!-- Tela inicial: identificação do eleitor -->
+      <!-- Tela inicial: boas-vindas e instruções -->
       <section id="tela-inicial" class="tela active">
         <h2>Bem-vindo à votação</h2>
-        <p>Digite o seu identificador de eleitor para começar:</p>
-        <input type="text" id="eleitor-id" placeholder="Número do eleitor" maxlength="20">
-        <div id="msg-erro" class="erro"></div>
-        <button id="btn-iniciar" class="btn-primario" disabled>Iniciar votação</button>
+        <p>Escolha seu candidato tocando no número:</p>
+        <div class="botoes">
+          <button class="btn-primario" onclick="irParaVotacao()">Votar</button>
+        </div>
       </section>
 
       <!-- Tela de votação: escolha do candidato -->
