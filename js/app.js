@@ -18,7 +18,6 @@ let candidatoSelecionado = null;
 
 // Elementos DOM
 const telaInicial = document.getElementById('tela-inicial');
-const telaVotacao = document.getElementById('tela-votacao');
 const telaConfirmacao = document.getElementById('tela-confirmacao');
 const telaFim = document.getElementById('tela-fim');
 
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   btnVotar.addEventListener('click', irParaConfirmacao);
   btnConfirmar.addEventListener('click', confirmarVoto);
-  btnCorrecao.addEventListener('click', () => mostrarTela(telaVotacao));
+  btnCorrecao.addEventListener('click', () => mostrarTela(telaInicial));
 });
 
 // --------------------------------------------------------------------------
@@ -54,7 +53,7 @@ async function carregarCandidatos() {
     renderizarCandidatos();
   } catch (erro) {
     console.error(erro);
-    listaCandidatos.innerHTML = '<p style="color:red">Erro ao carregar candidatos.</p>';
+    listaCandidatos.innerHTML = '<p style="color:red; padding:20px">Erro ao carregar candidatos.</p>';
   }
 }
 
@@ -97,15 +96,12 @@ function selecionarCandidato(candidato) {
     el.classList.toggle('selecionado', el.dataset.numero === candidato.numero);
   });
   btnVotar.disabled = false;
+  btnVotar.textContent = `Confirmar ${candidato.nome} (${candidato.numero})`;
 }
 
 // --------------------------------------------------------------------------
 // Fluxo de votação
 // --------------------------------------------------------------------------
-function irParaVotacao() {
-  mostrarTela(telaVotacao);
-}
-
 function irParaConfirmacao() {
   if (!candidatoSelecionado) return;
 
@@ -147,14 +143,14 @@ async function confirmarVoto() {
       });
       if (!resposta.ok) throw new Error('Erro ao enviar voto');
     } else {
-      // Modo demonstração: armazena localmente (não persiste no servidor)
+      // Modo demonstração: armazena localmente
       salvarVotoDemo(voto);
     }
 
     mostrarResultadoFinal(true);
   } catch (erro) {
     console.error(erro);
-    msgErro.textContent = 'Erro ao computar o voto. Tente novamente.';
+    alert('Erro ao computar o voto. Tente novamente.');
     mostrarTela(telaConfirmacao);
   }
 }
@@ -163,7 +159,7 @@ async function confirmarVoto() {
 // Telas
 // --------------------------------------------------------------------------
 function mostrarTela(tela) {
-  [telaInicial, telaVotacao, telaConfirmacao, telaFim].forEach((t) =>
+  [telaInicial, telaConfirmacao, telaFim].forEach((t) =>
     t.classList.remove('active')
   );
   tela.classList.add('active');

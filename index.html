@@ -18,20 +18,22 @@
     </header>
 
     <div class="urna-body">
-      <!-- Tela inicial: boas-vindas e instruções -->
+      <!-- Tela inicial: boas-vindas + candidatos -->
       <section id="tela-inicial" class="tela active">
         <h2>Bem-vindo à votação</h2>
         <p>Escolha seu candidato tocando no número:</p>
-        <div class="botoes">
-          <button class="btn-primario" onclick="irParaVotacao()">Votar</button>
-        </div>
-      </section>
-
-      <!-- Tela de votação: escolha do candidato -->
-      <section id="tela-votacao" class="tela">
-        <h2>Escolha seu candidato</h2>
         <div id="candidatos-lista"></div>
         <button id="btn-votar" class="btn-primario" disabled>Confirmar escolha</button>
+      </section>
+
+      <!-- Tela de confirmação -->
+      <section id="tela-confirmacao" class="tela">
+        <h2>Confirme seu voto</h2>
+        <div id="voto-resumo" class="resumo-voto"></div>
+        <div class="botoes">
+          <button id="btn-confirmar" class="btn-sucesso">Confirmar voto</button>
+          <button id="btn-correcao" class="btn-outline">Corrigir</button>
+        </div>
       </section>
 
       <!-- Tela de confirmação -->
