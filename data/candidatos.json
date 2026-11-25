@@ -6,7 +6,7 @@
     "coordenador": "Juliana",
     "vice": "Ana Letícia",
     "chapa": "1",
-    "foto": "",
+    "foto": "assets/juliana_leticia.jpeg",
     "bio": "Chapa 1 • Juliana Coordenadora e Ana Letícia Vice"
   },
   {
@@ -16,7 +16,7 @@
     "coordenador": "Pâmela",
     "vice": "Dudu",
     "chapa": "2",
-    "foto": "",
+    "foto": "assets/pamela_dudu.jpeg",
     "bio": "Chapa 2 • Pâmela Coordenadora e Dudu Vice"
   },
   {
@@ -26,7 +26,7 @@
     "coordenador": "",
     "vice": "",
     "chapa": "",
-    "foto": "/assets/branco.jpeg",
+    "foto": "",
     "bio": "Não selecione nenhum candidato"
   }
 ]
