@@ -240,60 +240,107 @@ button:disabled {
 #candidatos-lista {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 16px;
   width: 100%;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .candidato-card {
-  border: 2px solid var(--cor-borda);
-  border-radius: var(--raio-btn);
-  padding: 14px;
+  border: 3px solid var(--cor-borda);
+  border-radius: var(--raio);
+  padding: 20px 16px;
   cursor: pointer;
   transition: all 0.15s;
   background: var(--cor-branco);
   text-align: center;
   touch-action: manipulation;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .candidato-card:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
   border-color: var(--cor-secondary);
 }
 
 .candidato-card.selecionado {
   border-color: var(--cor-secondary);
   background: #FBF1E0;
-  box-shadow: 0 0 0 4px rgba(232,163,61,0.2);
+  box-shadow: 0 0 0 5px rgba(232,163,61,0.25);
 }
 
 .candidato-card img {
-  width: 64px;
-  height: 64px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 10px;
+  margin: 0 auto 14px;
   display: block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .candidato-card h3 {
-  font-size: 1rem;
-  margin-bottom: 4px;
+  font-size: 1.25rem;
+  margin-bottom: 6px;
   color: var(--cor-texto);
 }
 
 .candidato-card p {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--cor-texto-claro);
-  margin: 0;
+  margin: 4px 0;
+}
+
+.candidato-card small {
+  font-size: 0.9rem;
+  color: var(--cor-secondary-dark);
+  font-weight: 700;
+  margin-top: 8px;
+  display: block;
 }
 
 .numero {
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: 0.95rem;
+  font-weight: 900;
   color: var(--cor-primary);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   display: block;
+  background: #F2F5F5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--cor-primary);
+}
+
+/* Cards maiores no desktop (2 colunas) */
+@media (min-width: 640px) {
+  #candidatos-lista {
+    grid-template-columns: 1fr 1fr;
+    max-width: 420px;
+    margin: 0 auto 32px;
+    gap: 20px;
+  }
+
+  .candidato-card {
+    min-height: 280px;
+    padding: 24px 18px;
+  }
+
+  .candidato-card img {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 16px;
+  }
+
+  .candidato-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .candidato-card p {
+    font-size: 1rem;
+  }
 }
 
 /* ===== Resumo do voto ===== */
