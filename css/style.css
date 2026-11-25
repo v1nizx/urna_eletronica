@@ -1,90 +1,107 @@
 /* ============================================================================
    URNA ELETRÔNICA - PASCOM SÃO JOSÉ
+   Otimizado para celular (mobile-first)
    ============================================================================ */
 
+/* Variáveis - Cores identidade visual PASCOM São José */
 :root {
-  /* Cores identidade visual PASCOM São José */
   --cor-primary: #0E4B3A;      verde escuro São José
+  --cor-primary-dark: #0A382B; verde escuro mais fechado
   --cor-secondary: #E8A33D;    dourado faixa São José
+  --cor-secondary-dark: #C9862D; dourado escuro
   --cor-sucesso: #27AE60;      verde PASCOM
   --cor-perigo: #C0392B;       vermelho
   --cor-texto: #2C3E50;
+  --cor-texto-claro: #555;
   --cor-fundo: #F4F7F6;
   --cor-branco: #FFFFFF;
-  --cor-cinza: #6c757d;
+  --cor-cinza: #8A8F98;
+  --cor-borda: #E2E8EA;
   --cor-azul: #2980B9;         azul PASCOM
-  --sombra: 0 4px 12px rgba(0,0,0,0.1);
-  --raio: 12px;
+  --sombra: 0 4px 16px rgba(0,0,0,0.10);
+  --sombra-card: 0 2px 8px rgba(0,0,0,0.06);
+  --raio: 14px;
+  --raio-btn: 12px;
+  --fonte-titulo: 1.35rem;
+  --fonte-texto: 1rem;
+  --fonte-pequena: 0.85rem;
 }
 
+/* Reset e base mobile */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-  height: 100%;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: var(--cor-fundo);
-  color: var(--cor-texto);
-  line-height: 1.6;
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  height: 100vh;
+  max-height: 100vh;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.5;
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 12px)
+           env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 12px);
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ===== Container da urna ===== */
 .urna {
   width: 100%;
-  max-width: 430px;
+  max-width: 100%;
   background: var(--cor-branco);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: calc(100vh - 24px);
 }
 
+/* ===== Cabeçalho ===== */
 .urna-header {
-  background: linear-gradient(135deg, var(--cor-primary) 0%, #166534 100%);
+  background: linear-gradient(135deg, var(--cor-primary) 0%, var(--cor-primary-dark) 100%);
   color: var(--cor-branco);
-  padding: 24px 20px;
+  padding: 16px 14px;
   text-align: center;
 }
 
 .logo-urna {
-  width: 120px;
-  height: 120px;
+  width: 88px;
+  height: 88px;
   object-fit: contain;
-  margin-bottom: 12px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
 
 .urna-header h1 {
-  font-size: 1.5rem;
+  font-size: var(--fonte-titulo);
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .org {
-  font-size: 0.95rem;
+  font-size: var(--fonte-pequena);
   opacity: 0.95;
   font-weight: 600;
 }
 
 /* ===== Corpo da urna ===== */
 .urna-body {
-  padding: 24px;
-  min-height: 520px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
+  min-height: auto;
+  overflow-y: auto;
 }
 
 /* ===== Telas ===== */
@@ -94,7 +111,7 @@ body {
   align-items: center;
   text-align: center;
   width: 100%;
-  animation: fadeIn 0.35s ease;
+  animation: fadeIn 0.3s ease;
 }
 
 .tela.active {
@@ -107,57 +124,67 @@ body {
 }
 
 h2 {
-  font-size: 1.35rem;
-  margin-bottom: 12px;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
   color: var(--cor-primary);
+  font-weight: 700;
 }
 
 p {
-  margin-bottom: 20px;
-  color: var(--cor-cinza);
-  font-size: 0.95rem;
+  margin-bottom: 16px;
+  color: var(--cor-texto-claro);
+  font-size: var(--fonte-texto);
 }
 
 /* ===== Inputs ===== */
 input {
   width: 100%;
-  max-width: 280px;
-  padding: 14px 16px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 16px 18px;
+  border: 2px solid var(--cor-borda);
+  border-radius: var(--raio-btn);
+  font-size: 1rem; /* >=16px evita zoom no iOS ao focar */
   outline: none;
-  transition: border-color 0.2s;
+  background: var(--cor-branco);
+  color: var(--cor-texto);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus {
   border-color: var(--cor-secondary);
+  box-shadow: 0 0 0 4px rgba(232,163,61,0.15);
 }
 
 .erro {
   color: var(--cor-perigo);
-  font-size: 0.85rem;
-  margin-bottom: 16px;
-  min-height: 1.2em;
+  font-size: var(--fonte-pequena);
+  margin-bottom: 14px;
+  min-height: 1.3em;
+  text-align: center;
 }
 
-/* ===== Botões ===== */
+/* ===== Botões (toque amigável) ===== */
 button {
   width: 100%;
-  max-width: 280px;
-  padding: 14px;
+  padding: 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--raio-btn);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.1s, background 0.2s, opacity 0.2s;
   margin-bottom: 10px;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-primario {
@@ -166,7 +193,7 @@ button:disabled {
 }
 
 .btn-primario:not(:disabled):hover {
-  background: #d98c2b;
+  background: var(--cor-secondary-dark);
 }
 
 .btn-sucesso {
@@ -175,7 +202,7 @@ button:disabled {
 }
 
 .btn-sucesso:not(:disabled):hover {
-  background: #219150;
+  background: #1E9B4F;
 }
 
 .btn-perigo {
@@ -184,7 +211,7 @@ button:disabled {
 }
 
 .btn-perigo:not(:disabled):hover {
-  background: #a93226;
+  background: #A93226;
 }
 
 .btn-outline {
@@ -194,76 +221,76 @@ button:disabled {
 }
 
 .btn-outline:not(:disabled):hover {
-  background: #f8f9fa;
+  background: #F2F5F5;
   border-color: var(--cor-texto);
 }
 
 .botoes {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-width: 320px;
-  justify-content: center;
 }
 
 .botoes button {
-  max-width: none;
   flex: 1;
+  margin-bottom: 0;
 }
 
 /* ===== Candidatos ===== */
 #candidatos-lista {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   width: 100%;
-  max-width: 340px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .candidato-card {
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  padding: 12px;
+  border: 2px solid var(--cor-borda);
+  border-radius: var(--raio-btn);
+  padding: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   background: var(--cor-branco);
   text-align: center;
+  touch-action: manipulation;
 }
 
-.candidato-card:hover {
+.candidato-card:active {
+  transform: scale(0.98);
   border-color: var(--cor-secondary);
-  box-shadow: 0 2px 8px rgba(0,122,255,0.15);
 }
 
 .candidato-card.selecionado {
   border-color: var(--cor-secondary);
-  background: #e7f3ff;
-  box-shadow: 0 0 0 3px rgba(0,122,255,0.2);
+  background: #FBF1E0;
+  box-shadow: 0 0 0 4px rgba(232,163,61,0.2);
 }
 
 .candidato-card img {
-  width: 70px;
-  height: 70px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 8px;
+  margin: 0 auto 10px;
+  display: block;
 }
 
 .candidato-card h3 {
   font-size: 1rem;
   margin-bottom: 4px;
+  color: var(--cor-texto);
 }
 
 .candidato-card p {
   font-size: 0.8rem;
-  color: var(--cor-cinza);
+  color: var(--cor-texto-claro);
   margin: 0;
 }
 
 .numero {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--cor-primary);
   margin-bottom: 6px;
   display: block;
@@ -271,24 +298,25 @@ button:disabled {
 
 /* ===== Resumo do voto ===== */
 .resumo-voto {
-  background: #f8f9fa;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
+  background: #FBF1E0;
+  border: 2px dashed var(--cor-secondary);
+  border-radius: var(--raio-btn);
+  padding: 18px;
+  margin-bottom: 18px;
   text-align: left;
 }
 
 .resumo-voto h3 {
   margin-bottom: 12px;
   color: var(--cor-primary);
+  font-size: 1.1rem;
 }
 
 .resumo-item {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #F3E3C8;
   font-size: 0.95rem;
 }
 
@@ -297,23 +325,24 @@ button:disabled {
 }
 
 .resumo-item .valor {
-  font-weight: 700;
+  font-weight: 800;
   color: var(--cor-primary);
 }
 
 /* ===== Rodapé ===== */
 .urna-footer {
-  background: #f1f3f5;
-  padding: 12px;
+  background: #EFF3F2;
+  padding: 12px 14px;
   text-align: center;
   font-size: 0.75rem;
   color: var(--cor-cinza);
+  border-top: 1px solid var(--cor-borda);
 }
 
 /* ===== Admin ===== */
 .admin {
   width: 100%;
-  max-width: 900px;
+  max-width: 100%;
   background: var(--cor-branco);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
@@ -321,25 +350,40 @@ button:disabled {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  min-height: calc(100vh - 24px);
 }
 
 .admin-header {
-  background: linear-gradient(135deg, var(--cor-primary) 0%, #166534 100%);
+  background: linear-gradient(135deg, var(--cor-primary) 0%, var(--cor-primary-dark) 100%);
   color: var(--cor-branco);
-  padding: 20px;
+  padding: 16px 14px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-header .logo-urna {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.admin-header div {
+  flex: 1;
+  min-width: 0;
 }
 
 .admin-header h1 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
 }
 
 .admin-body {
-  padding: 24px;
+  padding: 16px 14px;
 }
 
 .admin-body .tela {
@@ -347,7 +391,7 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  animation: fadeIn 0.35s ease;
+  animation: fadeIn 0.3s ease;
 }
 
 .admin-body .tela.active {
@@ -355,34 +399,65 @@ button:disabled {
 }
 
 .apuracao-header {
+  width: 100%;
+  margin-bottom: 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
+  align-items: flex-start;
+}
+
+.apuracao-header h2 {
+  margin: 0;
+  color: var(--cor-primary);
+}
+
+.apuracao-header .acoes {
+  display: flex;
+  gap: 8px;
+  width: 100;
+  flex-wrap: wrap;
+}
+
+.apuracao-header .acoes button {
+  flex: 1 1 140px;
+  padding: 12px;
+  font-size: 0.9rem;
+}
+
+/* Tabela responsiva */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 8px;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  min-width: 480px;
+  font-size: 0.9rem;
 }
 
 th, td {
-  padding: 12px;
-  border: 1px solid #ddd;
+  padding: 12px 10px;
+  border: 1px solid var(--cor-borda);
   text-align: left;
+  white-space: nowrap;
 }
 
 th {
-  background: #f1f3f5;
+  background: #F2F5F5;
   color: var(--cor-primary);
   font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 tr:nth-child(even) {
-  background: #fafafa;
+  background: #FAFCFC;
 }
 
 .total-votos {
@@ -390,19 +465,100 @@ tr:nth-child(even) {
   font-weight: 700;
   margin: 16px 0;
   color: var(--cor-primary);
+  text-align: center;
 }
 
 .votos-extra {
   margin-top: 20px;
-  font-size: 0.95rem;
-  color: var(--cor-cinza);
+  font-size: 0.9rem;
+  color: var(--cor-texto-claro);
+  text-align: center;
 }
 
-/* ===== Responsivo ===== */
-@media (max-width: 480px) {
-  body { padding: 12px; }
-  .urna-body { padding: 16px; min-height: auto; }
-  #candidatos-lista { grid-template-columns: 1fr; }
-  .apuracao-header { flex-direction: column; align-items: stretch; }
-  .apuracao-header button { width: 100%; }
+/* ===== Ajustes desktop (acima de 640px) ===== */
+@media (min-width: 640px) {
+  body {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .urna {
+    max-width: 430px;
+    min-height: auto;
+  }
+
+  .admin {
+    max-width: 900px;
+    min-height: auto;
+  }
+
+  .urna-header {
+    padding: 24px 20px;
+  }
+
+  .logo-urna {
+    width: 110px;
+    height: 110px;
+  }
+
+  .urna-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .urna-body {
+    padding: 24px 20px;
+  }
+
+  #candidatos-lista {
+    grid-template-columns: 1fr 1fr;
+    max-width: 360px;
+    margin: 0 auto 24px;
+  }
+
+  .candidato-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  .admin-header {
+    padding: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .admin-header .logo-urna {
+    width: 80px;
+    height: 80px;
+  }
+
+  .admin-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .admin-body {
+    padding: 24px;
+  }
+
+  .apuracao-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .apuracao-header .acoes {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .apuracao-header .acoes button {
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  table {
+    min-width: auto;
+  }
 }
