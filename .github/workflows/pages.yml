@@ -12,12 +12,10 @@ permissions:
 
 concurrency:
   group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
@@ -26,11 +24,25 @@ jobs:
       - name: Configurar Pages
         uses: actions/configure-pages@v5
 
-      - name: Enviar arquivo para o Pages
+      - name: Listar arquivos (debug)
+        run: |
+          echo "Arquivos na raiz:"
+          ls -la
+          echo "Tamanho total:"
+          du -sh .
+
+      - name: Enviar artefato para o Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Fazer deploy no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
