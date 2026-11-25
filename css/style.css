@@ -345,35 +345,44 @@ button:disabled {
 
 /* ===== Resumo do voto ===== */
 .resumo-voto {
-  background: #FBF1E0;
-  border: 2px dashed var(--cor-secondary);
+  background: var(--cor-branco);
+  border: 3px solid var(--cor-secondary);
   border-radius: var(--raio-btn);
-  padding: 18px;
-  margin-bottom: 18px;
+  padding: 22px 18px;
+  margin-bottom: 24px;
   text-align: left;
+  box-shadow: var(--sombra-card);
 }
 
 .resumo-voto h3 {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   color: var(--cor-primary);
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  text-align: center;
 }
 
 .resumo-item {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #F3E3C8;
-  font-size: 0.95rem;
+  padding: 12px 0;
+  border-bottom: 2px solid var(--cor-borda);
+  font-size: 1rem;
+  align-items: center;
 }
 
 .resumo-item:last-child {
   border-bottom: none;
 }
 
+.resumo-item span:first-child {
+  color: var(--cor-texto);
+  font-weight: 700;
+}
+
 .resumo-item .valor {
   font-weight: 800;
   color: var(--cor-primary);
+  font-size: 1.05rem;
 }
 
 /* ===== Rodapé ===== */
