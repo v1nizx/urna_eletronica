@@ -165,31 +165,36 @@ input:focus {
 /* ===== Botões (toque amigável) ===== */
 button {
   width: 100%;
-  padding: 16px;
+  padding: 18px 20px;
   border: none;
   border-radius: var(--raio-btn);
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: transform 0.1s, background 0.2s, opacity 0.2s;
-  margin-bottom: 10px;
+  transition: transform 0.1s, background 0.2s, opacity 0.2s, box-shadow 0.2s;
+  margin: 14px 0 0 0;
   touch-action: manipulation;
   -webkit-appearance: none;
+  display: block;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
 button:active {
   transform: scale(0.97);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 button:disabled {
-  opacity: 0.55;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .btn-primario {
   background: var(--cor-secondary);
   color: var(--cor-branco);
+  border: 2px solid var(--cor-secondary-dark);
 }
 
 .btn-primario:not(:disabled):hover {
@@ -199,6 +204,7 @@ button:disabled {
 .btn-sucesso {
   background: var(--cor-sucesso);
   color: var(--cor-branco);
+  border: 2px solid #1E9B4F;
 }
 
 .btn-sucesso:not(:disabled):hover {
@@ -208,6 +214,7 @@ button:disabled {
 .btn-perigo {
   background: var(--cor-perigo);
   color: var(--cor-branco);
+  border: 2px solid #A93226;
 }
 
 .btn-perigo:not(:disabled):hover {
@@ -227,13 +234,27 @@ button:disabled {
 
 .botoes {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
+  margin-top: 10px;
 }
 
 .botoes button {
   flex: 1;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+/* Garantir que o botão de votar sempre fique visível no fundo da urna */
+#btn-votar {
+  margin-top: 24px;
+  position: sticky;
+  bottom: 14px;
+  z-index: 10;
+  background: var(--cor-secondary) !important;
+}
+
+.urna-body {
+  padding-bottom: 80px; /* espaço para o botão sticky não ficar coberto */
 }
 
 /* ===== Candidatos ===== */
