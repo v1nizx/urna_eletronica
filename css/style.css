@@ -3,14 +3,16 @@
    ============================================================================ */
 
 :root {
-  --cor-primary: #003366;      azul marinho da igreja
-  --cor-secondary: #007AFF;    azul iOS
-  --cor-sucesso: #28a745;      verde
-  --cor-perigo: #dc3545;       vermelho
-  --cor-texto: #222;
-  --cor-fundo: #f5f7fa;
-  --cor-branco: #fff;
+  /* Cores identidade visual PASCOM São José */
+  --cor-primary: #0E4B3A;      verde escuro São José
+  --cor-secondary: #E8A33D;    dourado faixa São José
+  --cor-sucesso: #27AE60;      verde PASCOM
+  --cor-perigo: #C0392B;       vermelho
+  --cor-texto: #2C3E50;
+  --cor-fundo: #F4F7F6;
+  --cor-branco: #FFFFFF;
   --cor-cinza: #6c757d;
+  --cor-azul: #2980B9;         azul PASCOM
   --sombra: 0 4px 12px rgba(0,0,0,0.1);
   --raio: 12px;
 }
@@ -49,21 +51,32 @@ body {
 }
 
 .urna-header {
-  background: var(--cor-primary);
+  background: linear-gradient(135deg, var(--cor-primary) 0%, #166534 100%);
   color: var(--cor-branco);
-  padding: 20px;
+  padding: 24px 20px;
   text-align: center;
+}
+
+.logo-urna {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 .urna-header h1 {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .org {
-  font-size: 0.9rem;
-  opacity: 0.9;
+  font-size: 0.95rem;
+  opacity: 0.95;
+  font-weight: 600;
 }
 
 /* ===== Corpo da urna ===== */
@@ -153,7 +166,7 @@ button:disabled {
 }
 
 .btn-primario:not(:disabled):hover {
-  background: #005ecb;
+  background: #d98c2b;
 }
 
 .btn-sucesso {
@@ -162,7 +175,7 @@ button:disabled {
 }
 
 .btn-sucesso:not(:disabled):hover {
-  background: #218838;
+  background: #219150;
 }
 
 .btn-perigo {
@@ -171,7 +184,7 @@ button:disabled {
 }
 
 .btn-perigo:not(:disabled):hover {
-  background: #c82333;
+  background: #a93226;
 }
 
 .btn-outline {
@@ -311,7 +324,7 @@ button:disabled {
 }
 
 .admin-header {
-  background: var(--cor-primary);
+  background: linear-gradient(135deg, var(--cor-primary) 0%, #166534 100%);
   color: var(--cor-branco);
   padding: 20px;
   display: flex;
@@ -321,6 +334,8 @@ button:disabled {
 
 .admin-header h1 {
   font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .admin-body {

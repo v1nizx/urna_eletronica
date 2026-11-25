@@ -8,13 +8,35 @@ Sistema simples de votação online para a PASCOM da São José, com deploy grat
 |--------|--------|
 | `index.html` | Urna de votação (eleitor vota) |
 | `admin.html` | Painel de apuração (resultado + exportar CSV) |
-| `css/style.css` | Estilo visual |
+| `css/style.css` | Estilo visual com cores da São José |
 | `js/app.js` | Lógica da urna |
 | `js/admin.js` | Lógica da apuração |
 | `data/candidatos.json` | Lista de candidatos (edite aqui) |
 | `votos.json` | Banco de votos (inicial vazio) |
 | `backend/Code.gs` | Google Apps Script para receber votos (opcional) |
 | `.github/workflows/pages.yml` | Deploy automático no GitHub Pages |
+| `assets/` | Pasta para a logo da São José (veja abaixo) |
+
+## 🎨 Identidade visual - PASCOM São José
+
+O sistema já vem com as cores da São José configuradas no `css/style.css`:
+
+| Elemento | Cor | Uso |
+|----------|-----|-----|
+| Verde escuro | `#0E4B3A` | Cabeçalhos, botões primários |
+| Dourado | `#E8A33D` | Destaques, botões de ação |
+| Verde PASCOM | `#27AE60` | Sucesso, confirmação |
+| Azul PASCOM | `#2980B9` | Elementos secundários |
+
+### 🖼️ Adicionar a logo
+
+Salve a imagem da logo da PASCOM São José como:
+
+```
+urna_eletronica/assets/logo-sao-jose.png
+```
+
+Recomendação: imagem PNG quadrada, fundo transparente, mínimo 500×500 px.
 
 ## 🚀 Como colocar no ar
 
