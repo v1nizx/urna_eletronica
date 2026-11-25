@@ -12,7 +12,7 @@
 <body>
   <div class="urna">
     <header class="urna-header">
-      <img src="assets/logo-sao-jose.png" alt="Logo PASCOM São José" class="logo-urna">
+      <img src="assets/logo-sao-jose.png" alt="Logo PASCOM São José" class="logo-urna" onerror="this.style.display='none'">
       <h1>Urna Eletrônica</h1>
       <div class="org">PASCOM &bull; Comunidade São José da Provid&ecirc;ncia</div>
     </header>
@@ -21,11 +21,18 @@
       <!-- Tela inicial: boas-vindas + candidatos -->
       <section id="tela-inicial" class="tela active">
         <h2>Bem-vindo à votação</h2>
-        <p>Escolha seu candidato tocando no número:</p>
+        <p>Escolha seu candidato tocando no n&uacute;mero:</p>
         <div class="conteudo-scroll">
-          <div id="candidatos-lista"></div>
+          <div id="candidatos-lista">
+            <!-- Carregando candidatos... -->
+            <div style="padding:20px;text-align:center;color:#6c757d;">
+              Carregando candidatos...
+            </div>
+          </div>
         </div>
-        <button id="btn-votar" class="btn-primario" disabled>Confirmar escolha</button>
+        <button id="btn-votar" class="btn-primario" disabled style="display:block;margin:24px auto 20px auto;">
+          Confirmar escolha
+        </button>
       </section>
 
       <!-- Tela de confirmação -->
@@ -43,13 +50,13 @@
       <!-- Tela final -->
       <section id="tela-fim" class="tela">
         <h2 id="titulo-fim">Voto computado!</h2>
-        <p id="msg-fim">Obrigado por participar da votação da PASCOM São José.</p>
-        <button class="btn-primario" onclick="location.reload()">Voltar ao in&iacute;cio</button>
+        <p id="msg-fim">Obrigado por participar da votação da PASCOM S&atilde;o Jos&eacute.</p>
+        <button class="btn-primario" onclick="location.reload()" style="margin-top:24px;">Voltar ao in&iacute;cio</button>
       </section>
     </div>
 
     <footer class="urna-footer">
-      <small>Urna Eletrônica Online &bull; PASCOM São José</small>
+      <small>Urna Eletr&ocirc;nica Online &bull; PASCOM S&atilde;o Jos&eacute;</small>
     </footer>
   </div>
 </body>
