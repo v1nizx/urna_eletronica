@@ -65,9 +65,11 @@ function renderizarCandidatos() {
     card.className = 'candidato-card';
     card.dataset.numero = c.numero;
 
-    const fotoHtml = c.foto
+    const ehBranco = c.numero === '0';
+
+    const fotoHtml = c.foto && !ehBranco
       ? `<img src="${c.foto}" alt="${c.nome}">`
-      : '<div style="width:64px;height:64px;border-radius:50%;background:#e2e8ea;margin:0 auto 10px"></div>';
+      : '';
 
     const viceHtml = c.vice ? `<br><small>Vice: ${c.vice}</small>` : '';
 
@@ -78,6 +80,11 @@ function renderizarCandidatos() {
       <p>${c.bio || c.cargo || ''}</p>
       ${viceHtml}
     `;
+
+    if (ehBranco) {
+      card.classList.add('branco');
+      card.style.borderStyle = 'dashed';
+    }
 
     card.addEventListener('click', () => selecionarCandidato(c));
     listaCandidatos.appendChild(card);
