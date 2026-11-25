@@ -127,6 +127,36 @@ body {
   padding: 0 14px;
 }
 
+/* Badge da etapa de votação */
+.etapa-badge {
+  display: inline-block;
+  background: #E8A33D;
+  color: #FFFFFF;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(232,163,61,0.35);
+}
+
+/* Grid de candidatos (usado nas duas etapas) */
+.candidatos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 640px) {
+  .candidatos-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -184,8 +214,12 @@ button {
   margin: 14px 0 0 0;
   touch-action: manipulation;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   display: block;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  line-height: 1.2;
+  text-align: center;
 }
 
 button:active {
@@ -201,18 +235,24 @@ button:disabled {
 }
 
 .btn-primario {
-  background: var(--cor-secondary);
-  color: var(--cor-branco);
-  border: 2px solid var(--cor-secondary-dark);
+  background: #E8A33D;
+  background: var(--cor-secondary, #E8A33D);
+  color: #FFFFFF;
+  color: var(--cor-branco, #FFFFFF);
+  border: 2px solid #C9862D;
+  border: 2px solid var(--cor-secondary-dark, #C9862D);
 }
 
 .btn-primario:not(:disabled):hover {
-  background: var(--cor-secondary-dark);
+  background: #C9862D;
+  background: var(--cor-secondary-dark, #C9862D);
 }
 
 .btn-sucesso {
-  background: var(--cor-sucesso);
-  color: var(--cor-branco);
+  background: #27AE60;
+  background: var(--cor-sucesso, #27AE60);
+  color: #FFFFFF;
+  color: var(--cor-branco, #FFFFFF);
   border: 2px solid #1E9B4F;
 }
 
@@ -221,8 +261,10 @@ button:disabled {
 }
 
 .btn-perigo {
-  background: var(--cor-perigo);
-  color: var(--cor-branco);
+  background: #C0392B;
+  background: var(--cor-perigo, #C0392B);
+  color: #FFFFFF;
+  color: var(--cor-branco, #FFFFFF);
   border: 2px solid #A93226;
 }
 
@@ -231,14 +273,14 @@ button:disabled {
 }
 
 .btn-outline {
-  background: transparent;
-  border: 2px solid var(--cor-cinza);
-  color: var(--cor-cinza);
+  background: #FFFFFF;
+  border: 2px solid #6C757D;
+  color: #6C757D;
 }
 
 .btn-outline:not(:disabled):hover {
   background: #F2F5F5;
-  border-color: var(--cor-texto);
+  border-color: #2C3E50;
 }
 
 .botoes {
@@ -535,7 +577,7 @@ button:disabled {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 480px;
+  min-width: 560px;
   font-size: 0.9rem;
 }
 

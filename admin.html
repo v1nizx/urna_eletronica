@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apuração - PASCOM São José</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="config.example.js" defer></script>
+  <script>
+    window.CONFIG = {
+      BACKEND_URL: '',
+      ADMIN_SENHA: 'pascom2026',
+      ELEICAO: 'Coordenação PASCOM São José 2026',
+      CARGO: 'Coordenação da PASCOM',
+      ARQUIVO_CANDIDATOS: 'data/candidatos.json',
+      ARQUIVO_VOTOS: 'votos.json',
+    };
+  </script>
   <script src="js/admin.js" defer></script>
 </head>
 <body>
@@ -19,39 +28,44 @@
     </header>
 
     <div class="admin-body">
-      <!-- Tela de login do admin -->
+      <!-- Login -->
       <section id="tela-login" class="tela active">
         <h2>Acesso restrito</h2>
         <p>Digite a senha de apura&ccedil;&atilde;o:</p>
         <input type="password" id="senha-admin" placeholder="Senha">
         <div id="msg-erro-admin" class="erro"></div>
-        <button id="btn-entrar-admin" class="btn-primario">Entrar</button>
+        <button id="btn-entrar-admin" class="btn-primario" style="background:#E8A33D;color:#FFFFFF;border:2px solid #C9862D;font-weight:800;">Entrar</button>
       </section>
 
-      <!-- Tela de apura&ccedil;&atilde;o -->
+      <!-- Apuração -->
       <section id="tela-apuracao" class="tela">
         <div class="apuracao-header">
           <h2>Resultado da Vota&ccedil;&atilde;o</h2>
-          <div>
-            <button id="btn-atualizar" class="btn-primario">Atualizar</button>
-            <button id="btn-exportar" class="btn-outline">Exportar CSV</button>
-            <button id="btn-sair-admin" class="btn-perigo">Sair</button>
+          <div class="acoes">
+            <button id="btn-atualizar" class="btn-primario" style="background:#E8A33D;color:#FFFFFF;border:2px solid #C9862D;">Atualizar</button>
+            <button id="btn-exportar" class="btn-outline" style="background:#FFFFFF;color:#6C757D;border:2px solid #6C757D;">Exportar CSV</button>
+            <button id="btn-sair-admin" class="btn-perigo" style="background:#C0392B;color:#FFFFFF;border:2px solid #A93226;">Sair</button>
           </div>
         </div>
 
         <div class="total-votos" id="total-votos">Total de votos: 0</div>
 
-        <table id="tabela-resultado">
-          <thead>
-            <tr>
-              <th>Candidato</th>
-              <th>N&uacute;mero</th>
-              <th>Votos</th>
-              <th>%</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div class="table-wrapper">
+          <table id="tabela-resultado">
+            <thead>
+              <tr>
+                <th>Pos.</th>
+                <th>Candidato</th>
+                <th>N&uacute;m.</th>
+                <th>Coord.</th>
+                <th>Vice</th>
+                <th>Total</th>
+                <th>Cargo</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
         <div id="votos-brancos-nulos"></div>
       </section>

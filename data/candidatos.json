@@ -1,32 +1,32 @@
 [
   {
-    "numero": "17",
-    "nome": "Juliana e Ana Letícia",
-    "cargo": "Coordenadora e Vice",
-    "coordenador": "Juliana",
-    "vice": "Ana Letícia",
-    "chapa": "1",
-    "foto": "assets/juliana_leticia.jpeg",
-    "bio": "Chapa 1 • Juliana Coordenadora e Ana Letícia Vice"
+    "numero": "12",
+    "nome": "Juliana",
+    "foto": "assets/juliana.jpeg",
+    "bio": "Candidata à Coordenação da PASCOM"
+  },
+  {
+    "numero": "23",
+    "nome": "Ana Letícia",
+    "foto": "assets/leticia.jpeg",
+    "bio": "Candidata à Coordenação da PASCOM"
   },
   {
     "numero": "34",
-    "nome": "Pâmela e Dudu",
-    "cargo": "Coordenadora e Vice",
-    "coordenador": "Pâmela",
-    "vice": "Dudu",
-    "chapa": "2",
-    "foto": "assets/pamela_dudu.jpeg",
-    "bio": "Chapa 2 • Pâmela Coordenadora e Dudu Vice"
+    "nome": "Pâmela",
+    "foto": "assets/pamela.jpeg",
+    "bio": "Candidata à Coordenação da PASCOM"
+  },
+  {
+    "numero": "45",
+    "nome": "Dudu",
+    "foto": "assets/dudu.jpeg",
+    "bio": "Candidato à Coordenação da PASCOM"
   },
   {
     "numero": "0",
     "nome": "Voto em Branco",
-    "cargo": "",
-    "coordenador": "",
-    "vice": "",
-    "chapa": "",
-    "foto": "assets/branco.jpeg",
+    "foto": "",
     "bio": "Não selecione nenhum candidato"
   }
 ]

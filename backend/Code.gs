@@ -10,11 +10,10 @@
 // 6. Executar como: Você mesmo
 // 7. Quem tem acesso: Qualquer pessoa (mesmo não logada no Google)
 // 8. Implante e copie a URL do Web App
-// 9. Cole essa URL no arquivo config.example.js (renomeie para config.js)
-//    na variável BACKEND_URL
+// 9. Cole essa URL no arquivo config.js na variável BACKEND_URL
 // ============================================================================
 
-const PLANILHA_ID = ''; // Opcional: ID da Planilha Google para gravar os votos
+const PLANILHA_ID = ''; // Cole aqui o ID da sua Planilha Google
 const SENHA_ADMIN = 'pascom2026'; // Deve bater com o ADMIN_SENHA do config.js
 
 function doPost(e) {
@@ -26,17 +25,18 @@ function doPost(e) {
       dados = e.parameter;
     }
 
-    // Valida campos obrigatórios (apenas candidato, não há mais identificação de eleitor)
-    if (!dados.candidato) {
+    // Valida campos obrigatórios (coordenacao e vice)
+    if (!dados.coordenacao || !dados.vice) {
       return ContentService.createTextOutput(
-        JSON.stringify({ erro: 'Campo candidato é obrigatório' })
+        JSON.stringify({ erro: 'Campos coordenacao e vice são obrigatórios' })
       ).setMimeType(ContentService.MimeType.JSON);
     }
 
     const registro = {
-      eleitor: dados.eleitor || '',
-      candidato: dados.candidato,
-      candidatoNome: dados.candidatoNome || '',
+      coordenacao: dados.coordenacao,
+      coordenacaoNome: dados.coordenacaoNome || '',
+      vice: dados.vice,
+      viceNome: dados.viceNome || '',
       timestamp: dados.timestamp || new Date().toISOString(),
       recebidoEm: new Date().toISOString(),
     };
@@ -45,13 +45,23 @@ function doPost(e) {
     if (PLANILHA_ID) {
       const planilha = SpreadsheetApp.openById(PLANILHA_ID);
       const aba = planilha.getSheetByName('Votos') || planilha.insertSheet('Votos');
+
       if (aba.getLastRow() === 0) {
-        aba.appendRow(['eleitor', 'candidato', 'candidatoNome', 'timestamp', 'recebidoEm']);
+        aba.appendRow([
+          'coordenacao',
+          'coordenacaoNome',
+          'vice',
+          'viceNome',
+          'timestamp',
+          'recebidoEm',
+        ]);
       }
+
       aba.appendRow([
-        registro.eleitor,
-        registro.candidato,
-        registro.candidatoNome,
+        registro.coordenacao,
+        registro.coordenacaoNome,
+        registro.vice,
+        registro.viceNome,
         registro.timestamp,
         registro.recebidoEm,
       ]);
