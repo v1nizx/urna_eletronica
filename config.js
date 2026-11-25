@@ -10,7 +10,7 @@ const CONFIG = {
   // URL do Web App do Google Apps Script que recebe os votos.
   // Deixe em branco ('') para usar o modo demonstração (localStorage).
   // Veja o arquivo backend/Code.gs para instruções de deploy.
-  BACKEND_URL: '',
+  BACKEND_URL: 'https://script.google.com/macros/s/AKfycbxRpQymP6jPBhUQ8vTShjvN6nJUxrFNs4dppIePxrc5WRl2l0efDioVAP2muI0P7SojIw/exec',
 
   // --------------------------------------------------------------------------
   // PAINEL DE APURAÇÃO (admin)
@@ -21,8 +21,8 @@ const CONFIG = {
   // --------------------------------------------------------------------------
   // ELEIÇÃO
   // --------------------------------------------------------------------------
-  ELEICAO: 'Coordenação PASCOM São José 2026',
-  CARGO: 'Coordenador(a) da PASCOM',
+  ELEICAO: 'Coordenação PASCOM São José 2027-2028',
+  CARGO: 'Coordenador(a) da PASCOM','Vice-Coordenador(a) da PASCOM','Secretário(a) da PASCOM', 
 
   // --------------------------------------------------------------------------
   // ARQUIVOS
