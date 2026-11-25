@@ -54,7 +54,47 @@ Sua urna ficará disponível em:
 
 ### 2. Configure os candidatos
 
-Edite `data/candidatos.json` com os nomes, números e fotos dos candidatos da PASCOM.
+Edite `data/candidatos.json` com os candidatos da PASCOM. A estrutura já está pronta:
+
+| Campo | Descrição |
+|-------|-----------|
+| `numero` | Número da urna (ex: 17, 34) |
+| `nome` | Nome da chapa (ex: "Juliana e Ana Letícia") |
+| `coordenador` | Nome do coordenador(a) |
+| `vice` | Nome do vice |
+| `foto` | Caminho da foto (ex: `assets/foto-juliana.png`) |
+| `bio` | Descrição da chapa |
+
+#### 📸 Adicionar fotos
+
+Salve as fotos na pasta `assets/` e referencie no `candidatos.json`:
+
+```
+urna_eletronica/
+├── assets/
+│   ├── logo-sao-jose.png
+│   ├── foto-juliana.png
+│   ├── foto-pamela.png
+│   └── ...
+└── data/
+    └── candidatos.json
+```
+
+No JSON:
+```json
+"foto": "assets/foto-juliana.png"
+```
+
+Recomendação: imagens quadradas (400×400 px), formato PNG ou JPG.
+
+#### 🔢 Números dos candidatos
+
+Os números já foram gerados aleatóriamente:
+- **Chapa 1**: Juliana e Ana Letícia → número **17**
+- **Chapa 2**: Pâmela e Dudu → número **34**
+- **Branco**: número **0**
+
+> Regra da eleição: o terceiro mais votado entra como secretário.
 
 ### 3. Mude a senha do admin
 
