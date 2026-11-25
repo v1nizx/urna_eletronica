@@ -28,7 +28,7 @@ O sistema já vem com as cores da São José configuradas no `css/style.css`:
 | Verde PASCOM | `#27AE60` | Sucesso, confirmação |
 | Azul PASCOM | `#2980B9` | Elementos secundários |
 
-### 🖼️ Adicionar a logo
+#### 🖼️ Adicionar a logo
 
 Salve a imagem da logo da PASCOM São José como:
 
