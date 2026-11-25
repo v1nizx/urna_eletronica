@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apuração - PASCOM São José</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="config.example.js" defer></script>
+  <script src="js/admin.js" defer></script>
+</head>
+<body>
+  <div class="admin">
+    <header class="admin-header">
+      <h1>Painel de Apura&ccedil;&atilde;o</h1>
+      <div class="org">PASCOM &bull; S&atilde;o Jos&eacute;</div>
+    </header>
+
+    <div class="admin-body">
+      <!-- Tela de login do admin -->
+      <section id="tela-login" class="tela active">
+        <h2>Acesso restrito</h2>
+        <p>Digite a senha de apura&ccedil;&atilde;o:</p>
+        <input type="password" id="senha-admin" placeholder="Senha">
+        <div id="msg-erro-admin" class="erro"></div>
+        <button id="btn-entrar-admin" class="btn-primario">Entrar</button>
+      </section>
+
+      <!-- Tela de apura&ccedil;&atilde;o -->
+      <section id="tela-apuracao" class="tela">
+        <div class="apuracao-header">
+          <h2>Resultado da Vota&ccedil;&atilde;o</h2>
+          <div>
+            <button id="btn-atualizar" class="btn-primario">Atualizar</button>
+            <button id="btn-exportar" class="btn-outline">Exportar CSV</button>
+            <button id="btn-sair-admin" class="btn-perigo">Sair</button>
+          </div>
+        </div>
+
+        <div class="total-votos" id="total-votos">Total de votos: 0</div>
+
+        <table id="tabela-resultado">
+          <thead>
+            <tr>
+              <th>Candidato</th>
+              <th>N&uacute;mero</th>
+              <th>Votos</th>
+              <th>%</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div id="votos-brancos-nulos"></div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

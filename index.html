@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urna Eletrônica - PASCOM São José</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Carrega a configuração. Renomeie config.example.js para config.js e preencha. -->
+  <script src="config.example.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="urna">
+    <header class="urna-header">
+      <h1>Urna Eletrônica</h1>
+      <div class="org">PASCOM &bull; São José</div>
+    </header>
+
+    <div class="urna-body">
+      <!-- Tela inicial: identificação do eleitor -->
+      <section id="tela-inicial" class="tela active">
+        <h2>Bem-vindo à votação</h2>
+        <p>Digite o seu identificador de eleitor para começar:</p>
+        <input type="text" id="eleitor-id" placeholder="Número do eleitor" maxlength="20">
+        <div id="msg-erro" class="erro"></div>
+        <button id="btn-iniciar" class="btn-primario" disabled>Iniciar votação</button>
+      </section>
+
+      <!-- Tela de votação: escolha do candidato -->
+      <section id="tela-votacao" class="tela">
+        <h2>Escolha seu candidato</h2>
+        <div id="candidatos-lista"></div>
+        <button id="btn-votar" class="btn-primario" disabled>Confirmar escolha</button>
+      </section>
+
+      <!-- Tela de confirmação -->
+      <section id="tela-confirmacao" class="tela">
+        <h2>Confirme seu voto</h2>
+        <div id="voto-resumo" class="resumo-voto"></div>
+        <div class="botoes">
+          <button id="btn-confirmar" class="btn-sucesso">Confirmar voto</button>
+          <button id="btn-correcao" class="btn-outline">Corrigir</button>
+        </div>
+      </section>
+
+      <!-- Tela final -->
+      <section id="tela-fim" class="tela">
+        <h2 id="titulo-fim">Voto computado!</h2>
+        <p id="msg-fim">Obrigado por participar da votação da PASCOM São José.</p>
+        <button class="btn-primario" onclick="location.reload()">Voltar ao in&iacute;cio</button>
+      </section>
+    </div>
+
+    <footer class="urna-footer">
+      <small>Urna Eletrônica Online &bull; PASCOM São José</small>
+    </footer>
+  </div>
+</body>
+</html>

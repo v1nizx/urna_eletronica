@@ -1,0 +1,26 @@
+[
+  {
+    "numero": "1",
+    "nome": "João Silva",
+    "foto": "https://ui-avatars.com/api/?name=Joao+Silva&background=007AFF&color=fff&size=200",
+    "bio": "Membro ativo da PASCOM há 5 anos, responsável pelas redes sociais."
+  },
+  {
+    "numero": "2",
+    "nome": "Maria Oliveira",
+    "foto": "https://ui-avatars.com/api/?name=Maria+Oliveira&background=28a745&color=fff&size=200",
+    "bio": "Atua na pastoral da comunicação e produz o boletim semanal."
+  },
+  {
+    "numero": "3",
+    "nome": "Pedro Santos",
+    "foto": "https://ui-avatars.com/api/?name=Pedro+Santos&background=ff9800&color=fff&size=200",
+    "bio": "Jovem, entusiasta de mídia e edição de vídeo para a paróquia."
+  },
+  {
+    "numero": "0",
+    "nome": "Voto em Branco",
+    "foto": "",
+    "bio": ""
+  }
+]
