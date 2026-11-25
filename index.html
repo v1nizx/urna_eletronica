@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Urna Eletrônica - PASCOM São José</title>
   <link rel="stylesheet" href="css/style.css">
-  <!-- Carrega a configuração. Renomeie config.example.js para config.js e preencha. -->
-  <script src="config.example.js" defer></script>
+  <!-- Carrega a configuração. Crie config.js copiando config.example.js. -->
+  <script src="config.js" defer></script>
   <script src="js/app.js" defer></script>
 </head>
 <body>
@@ -22,14 +22,18 @@
       <section id="tela-inicial" class="tela active">
         <h2>Bem-vindo à votação</h2>
         <p>Escolha seu candidato tocando no número:</p>
-        <div id="candidatos-lista"></div>
+        <div class="conteudo-scroll">
+          <div id="candidatos-lista"></div>
+        </div>
         <button id="btn-votar" class="btn-primario" disabled>Confirmar escolha</button>
       </section>
 
       <!-- Tela de confirmação -->
       <section id="tela-confirmacao" class="tela">
         <h2>Confirme seu voto</h2>
-        <div id="voto-resumo" class="resumo-voto"></div>
+        <div class="conteudo-scroll">
+          <div id="voto-resumo" class="resumo-voto"></div>
+        </div>
         <div class="botoes">
           <button id="btn-confirmar" class="btn-sucesso">Confirmar voto</button>
           <button id="btn-correcao" class="btn-outline">Corrigir</button>

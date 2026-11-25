@@ -101,7 +101,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: auto;
-  overflow-y: auto;
 }
 
 /* ===== Telas ===== */
@@ -111,11 +110,21 @@ body {
   align-items: center;
   text-align: center;
   width: 100%;
+  height: 100%;
   animation: fadeIn 0.3s ease;
 }
 
 .tela.active {
   display: flex;
+}
+
+/* Área rolável do conteúdo (lista de candidatos ou resumo) */
+.conteudo-scroll {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 14px;
 }
 
 @keyframes fadeIn {
@@ -244,17 +253,10 @@ button:disabled {
   margin: 0;
 }
 
-/* Garantir que o botão de votar sempre fique visível no fundo da urna */
+/* Botão de votar - sempre visível abaixo da área rolável */
 #btn-votar {
   margin-top: 24px;
-  position: sticky;
-  bottom: 14px;
-  z-index: 10;
-  background: var(--cor-secondary) !important;
-}
-
-.urna-body {
-  padding-bottom: 80px; /* espaço para o botão sticky não ficar coberto */
+  margin-bottom: 20px;
 }
 
 /* ===== Candidatos ===== */

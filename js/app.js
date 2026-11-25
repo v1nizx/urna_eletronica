@@ -13,6 +13,12 @@ let CONFIG = window.CONFIG || {
   ARQUIVO_VOTOS: 'votos.json',
 };
 
+// Se config.js falhou ao carregar, define valores seguros para não quebrar
+if (!window.CONFIG) {
+  window.CONFIG = CONFIG;
+  console.warn('config.js não carregado. Usando valores padrão.');
+}
+
 let candidatos = [];
 let candidatoSelecionado = null;
 
