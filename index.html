@@ -5,17 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Urna Eletrônica - PASCOM São José</title>
   <link rel="stylesheet" href="css/style.css">
-  <!-- Configuração inline -->
-  <script>
-    window.CONFIG = {
-      BACKEND_URL: '',
-      ADMIN_SENHA: 'pascom2026',
-      ELEICAO: 'Coordenação PASCOM São José 2026',
-      CARGO: 'Coordenação da PASCOM',
-      ARQUIVO_CANDIDATOS: 'data/candidatos.json',
-      ARQUIVO_VOTOS: 'votos.json',
-    };
-  </script>
+  <!-- Configuração (edita-se em config.js) -->
+  <script src="config.js"></script>
+  <!-- Firebase / Firestore (voto único). type=module; expõe window.UrnaFirebase -->
+  <script type="module" src="js/firebase.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body>
@@ -27,8 +20,21 @@
     </header>
 
     <div class="urna-body">
+      <!-- ETAPA 0: Identificação do eleitor (voto único) -->
+      <section id="tela-eleitor" class="tela active">
+        <h2>Identifique-se</h2>
+        <p>Digite o seu <strong>telefone cadastrado</strong>. Cada telefone vota <strong>uma única vez</strong>.</p>
+        <label for="input-eleitor" style="display:block;margin-bottom:8px;font-weight:700;color:#0E4B3A;">Seu telefone</label>
+        <input type="tel" id="input-eleitor" name="telefone" inputmode="tel" autocomplete="off"
+               placeholder="Ex: (98) 99999-9999" style="max-width:320px;margin:0 auto 16px;display:block;text-align:center;font-size:1.2rem;font-weight:800;letter-spacing:1px;">
+        <div id="msg-eleitor" class="erro" style="text-align:center;margin-bottom:12px;min-height:1.3em;"></div>
+        <button id="btn-entrar-eleitor" class="btn-primario" style="display:block;margin:8px auto 20px;width:90%;max-width:300px;background:#E8A33D;color:#FFFFFF;border:2px solid #C9862D;font-weight:800;">
+          Continuar
+        </button>
+      </section>
+
       <!-- ETAPA 1: Voto para Coordenação -->
-      <section id="tela-coordenacao" class="tela active">
+      <section id="tela-coordenacao" class="tela">
         <div class="etapa-badge">1º Voto</div>
         <h2>Escolha o Coordenador(a)</h2>
         <p>Toque no número do candidato:</p>
@@ -72,7 +78,7 @@
       <!-- TELA FINAL -->
       <section id="tela-fim" class="tela">
         <h2 id="titulo-fim">Voto computado!</h2>
-        <p id="msg-fim">Obrigado por participar da votação da PASCOM S&atilde;o Jos&eacute.</p>
+        <p id="msg-fim">Obrigado por participar da votação da PASCOM S&atilde;o Jos&eacute;.</p>
         <button class="btn-primario" onclick="location.reload()" style="margin-top:24px;width:90%;max-width:300px;background:#E8A33D;color:#FFFFFF;border:2px solid #C9862D;font-weight:800;">Voltar ao in&iacute;cio</button>
       </section>
     </div>

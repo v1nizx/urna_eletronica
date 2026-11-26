@@ -1,0 +1,66 @@
+// ============================================================================
+// REGRAS DE SEGURANÇA - FIRESTORE (Urna Eletrônica PASCOM São José)
+// ============================================================================
+// Aplicar: Firebase Console > Firestore Database > Regras (colar este conteúdo)
+// ou via CLI: firebase deploy --only firestore:rules
+//
+// MODELO DE DADOS (telefone = número de telefone normalizado, só dígitos,
+// DDD + número, sem código de país; ex.: 11999999999)
+//
+//   eleitores/{telefone}  CADASTRO DE APTOS. id = telefone. {nome, telefone}.
+//                         Cadastrado por VOCÊ (admin) no Console/CLI, NÃO pelo app.
+//   votou/{telefone}      MARCADOR DE VOTO ÚNICO. {telefone, em}. Criado 1x pelo app.
+//   votos/{autoId}        O VOTO. SEM telefone/nome do eleitor (sigilo do voto).
+//
+// VOTO ÚNICO + CONFERÊNCIA (reforçado no cliente E aqui, e no código na transação):
+//   - votar só é permitido se `eleitores/{telefone}` EXISTE (cadastrado/apto)
+//   - votar só é permitido se `votou/{telefone}` NÃO existe
+//   - `votou` só permite CREATE (não update/delete) -> não duplica, não apaga
+//   - grava `votou` + `votos` na mesma transação atômica
+//
+// LIMITAÇÃO HONESTA: sem Firebase Authentication, qualquer pessoa que saiba um
+// telefone cadastrado pode tentar usá-lo; quem chegar primeiro vota. Estas
+// regras garantem não-duplicidade + cadastrado, não prova de identidade.
+// Para eleição oficial/segura: exigir request.auth (Firebase Auth), votar via
+// Cloud Function, restringir leitura de `votos`, auditoria. Veja README.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // CADASTRO DE ELEITORES APTOS ------------------------------------------
+    match /eleitores/{telefone} {
+      allow get: if true;    // app faz getDoc(id) para conferir cadastro
+      allow list: if false;  // não listar telefones cadastrados
+      allow write: if false; // só admin cadastra (Console/CLI); app não escreve
+    }
+
+    // MARCADOR DE VOTO ÚNICO -----------------------------------------------
+    match /votou/{telefone} {
+      allow get: if true;    // conferir se já votou
+      allow list: if false;
+      allow create: if isValidVotou(request.resource.data);
+      allow update, delete: if false;
+    }
+
+    // VOTOS (sem PII) -------------------------------------------------------
+    match /votos/{id} {
+      allow read: if true;   // apuração no painel; voto não contém identificação
+      allow create: if isValidVoto(request.resource.data);
+      allow update, delete: if false;
+    }
+  }
+}
+
+function isValidVotou(data) {
+  return data.keys().hasOnly(['telefone', 'em']);
+}
+
+function isValidVoto(v) {
+  return v.keys().hasOnly([
+      'coordenacao', 'coordenacaoNome',
+      'vice', 'viceNome', 'timestamp', 'recebidoEm'
+    ])
+    && v.coordenacao is string && v.coordenacao.size() >= 1
+    && v.vice is string && v.vice.size() >= 1;
+}

@@ -82,15 +82,23 @@ async function carregarCandidatos() {
   }
 }
 
+// Busca os votos: Firestore (Firebase) quando configurado; senão votos.json.
+async function obterVotos() {
+  if (window.UrnaFirebase && window.UrnaFirebase.disponivel) {
+    return await window.UrnaFirebase.listarVotos();
+  }
+  const resposta = await fetch(CONFIG.ARQUIVO_VOTOS + '?t=' + Date.now());
+  if (!resposta.ok) throw new Error('Não foi possível carregar os votos');
+  return await resposta.json();
+}
+
 async function carregarApuracao() {
   try {
-    const resposta = await fetch(CONFIG.ARQUIVO_VOTOS + '?t=' + Date.now());
-    if (!resposta.ok) throw new Error('Não foi possível carregar os votos');
-    const votos = await resposta.json();
+    const votos = await obterVotos();
     renderizarApuracao(votos);
   } catch (e) {
     console.error(e);
-    tabelaBody.innerHTML = '<tr><td colspan="7" style="color:red">Erro ao carregar votos. Configure o backend ou adicione votos no votos.json.</td></tr>';
+    tabelaBody.innerHTML = '<tr><td colspan="7" style="color:red">Erro ao carregar votos. Configure o Firebase ou adicione votos no votos.json.</td></tr>';
   }
 }
 
@@ -246,29 +254,28 @@ function criarLinhaCargo(cargo, nome) {
 // --------------------------------------------------------------------------
 // Exportar CSV
 // --------------------------------------------------------------------------
-function exportarCSV() {
-  fetch(CONFIG.ARQUIVO_VOTOS + '?t=' + Date.now())
-    .then((r) => r.json())
-    .then((votos) => {
-      let csv = 'coordenacao,coordenacaoNome,vice,viceNome,timestamp\n';
-      votos.forEach((v) => {
-        const coord = v.coordenacao !== undefined ? v.coordenacao : (v.candidato || '');
-        const coordNome = v.coordenacaoNome !== undefined ? v.coordenacaoNome : (v.candidatoNome || '');
-        csv += `"${coord}","${(coordNome || '').replace(/"/g, '""')}","${v.vice || ''}","${(v.viceNome || '').replace(/"/g, '""')}","${v.timestamp || ''}"\n`;
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `apuracao_pascom_${new Date().toISOString().slice(0,10)}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    })
-    .catch((e) => {
-      console.error(e);
-      alert('Erro ao exportar CSV.');
+async function exportarCSV() {
+  try {
+    const votos = await obterVotos();
+    // votos são anônimos (sem telefone); total de eleitores = total de votos
+    let csv = 'coordenacao,coordenacaoNome,vice,viceNome,timestamp\n';
+    votos.forEach((v) => {
+      const coord = v.coordenacao !== undefined ? v.coordenacao : (v.candidato || '');
+      const coordNome = v.coordenacaoNome !== undefined ? v.coordenacaoNome : (v.candidatoNome || '');
+      csv += `"${coord}","${(coordNome || '').replace(/"/g, '""')}","${v.vice || ''}","${(v.viceNome || '').replace(/"/g, '""')}","${v.timestamp || ''}"\n`;
     });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `apuracao_pascom_${new Date().toISOString().slice(0,10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (e) {
+    console.error(e);
+    alert('Erro ao exportar CSV.');
+  }
 }

@@ -5,7 +5,7 @@
 
 // Configuração
 let CONFIG = window.CONFIG || {
-  BACKEND_URL: '',
+  FIREBASE: null,
   ADMIN_SENHA: 'pascom2026',
   ELEICAO: 'Coordenação PASCOM São José 2026',
   CARGO: 'Coordenação da PASCOM',
@@ -25,8 +25,14 @@ const CANDIDATOS_PADRAO = [
 let candidatos = [];
 let candidatoCoordenacao = null;
 let candidatoVice = null;
+let telefoneAtual = null; // telefone do eleitor (voto único + cadastro)
 
 // Elementos DOM
+const telaEleitor = document.getElementById('tela-eleitor');
+const inputEleitor = document.getElementById('input-eleitor');
+const btnEntrarEleitor = document.getElementById('btn-entrar-eleitor');
+const msgEleitor = document.getElementById('msg-eleitor');
+
 const telaCoordenacao = document.getElementById('tela-coordenacao');
 const telaVice = document.getElementById('tela-vice');
 const telaConfirmacao = document.getElementById('tela-confirmacao');
@@ -59,6 +65,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   renderizarEtapaCoordenacao();
 
+  if (btnEntrarEleitor) {
+    btnEntrarEleitor.addEventListener('click', entrarComoEleitor);
+  }
+  if (inputEleitor) {
+    inputEleitor.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') entrarComoEleitor();
+    });
+  }
   if (btnConfirmarCoordenacao) {
     btnConfirmarCoordenacao.addEventListener('click', irParaVice);
   }
@@ -73,6 +87,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Volta para a etapa 1
       candidatoCoordenacao = null;
       candidatoVice = null;
+      // mantém o telefone do eleitor; só limpa a escolha de candidatos
+      if (btnConfirmarCoordenacao) { btnConfirmarCoordenacao.disabled = true; }
+      if (btnConfirmarVice) { btnConfirmarVice.disabled = true; }
       renderizarEtapaCoordenacao();
       renderizarEtapaVice();
       mostrarTela(telaCoordenacao);
@@ -260,12 +277,116 @@ function criarLinhaResumo(label, valor, ultima) {
 }
 
 // --------------------------------------------------------------------------
+// Identificação do eleitor + voto único
+// --------------------------------------------------------------------------
+// "configurado" = usuário preencheu FIREBASE (quer usar Firebase, não modo demo)
+function firebaseConfigurado() {
+  const fb = CONFIG.FIREBASE;
+  return !!(fb && fb.apiKey && fb.projectId);
+}
+
+// "usarFirebase" = configurado E conectado com sucesso
+function usarFirebase() {
+  return !!(window.UrnaFirebase && window.UrnaFirebase.disponivel);
+}
+
+// Normalização do TELEFONE: só dígitos, remove prefixo 0, remove país 55 (BR).
+// (11) 99999-9999 / 11999999999 / +55 11 99999-9999 -> 11999999999
+function normalizarTelefone(valor) {
+  if (valor === null || valor === undefined) return '';
+  let d = String(valor).trim().replace(/\D/g, '');
+  if (!d) return '';
+  d = d.replace(/^0+/, '');
+  if (d.length >= 12 && d.indexOf('55') === 0) d = d.slice(2);
+  d = d.replace(/^0+/, '');
+  return d;
+}
+
+function mostrarMsgEleitor(texto, erro) {
+  if (!msgEleitor) return;
+  msgEleitor.textContent = texto || '';
+  msgEleitor.style.color = erro ? '#C0392B' : '#27AE60';
+}
+
+// ----- Modo demonstração (sem Firebase): voto único por navegador ----------
+function lerTelefonesVotaramDemo() {
+  try { return JSON.parse(localStorage.getItem('urna_telefones_votaram_demo') || '[]'); }
+  catch (e) { return []; }
+}
+function telefoneJaVotouDemo(numero) {
+  const n = normalizarTelefone(numero);
+  return lerTelefonesVotaramDemo().map(normalizarTelefone).indexOf(n) !== -1;
+}
+
+async function entrarComoEleitor() {
+  const telefone = normalizarTelefone(inputEleitor ? inputEleitor.value : '');
+  if (!telefone) { mostrarMsgEleitor('Digite o seu telefone para continuar.', true); return; }
+
+  if (btnEntrarEleitor) btnEntrarEleitor.disabled = true;
+  try {
+    if (firebaseConfigurado()) {
+      if (!usarFirebase()) {
+        mostrarMsgEleitor('Firebase configurado, mas sem conexão. Cadastro não pode ser verificado nem voto salvo agora.', true);
+        return;
+      }
+      // Consulta o Firestore: telefone CADASTRADO? já VOTOU? (não grava nada)
+      let verificacao;
+      try {
+        verificacao = await window.UrnaFirebase.checarEleitor(telefone);
+      } catch (e) {
+        console.error('Falha ao verificar cadastro no Firebase.', e);
+        if (e && e.code === 'permission-denied') {
+          mostrarMsgEleitor(
+            'Permissão negada no Firestore: publique as regras (firestore.rules) no Console do Firebase.',
+            true
+          );
+        } else if (e && e.code === 'failed-precondition') {
+          mostrarMsgEleitor('Firestore indisponível (índice/banco não criado). Tente novamente.', true);
+        } else {
+          mostrarMsgEleitor('Não foi possível verificar seu cadastro no servidor. Tente novamente.', true);
+        }
+        return;
+      }
+      if (verificacao.jaVotou) { mostrarMsgEleitor('Este telefone já votou. Não é possível votar duas vezes.', true); return; }
+      if (!verificacao.cadastrado) { mostrarMsgEleitor('Este telefone não está cadastrado. Procure a organização.', true); return; }
+    } else if (telefoneJaVotouDemo(telefone)) {
+      mostrarMsgEleitor('Este telefone já votou. Não é possível votar duas vezes.', true);
+      return;
+    }
+
+    telefoneAtual = telefone;
+    mostrarMsgEleitor('', false);
+    renderizarEtapaCoordenacao();
+    mostrarTela(telaCoordenacao);
+  } finally {
+    if (btnEntrarEleitor) btnEntrarEleitor.disabled = false;
+  }
+}
+
+function salvarVotoDemo(voto) {
+  if (telefoneJaVotouDemo(voto.telefone)) {
+    const e = new Error('eleitor_ja_votou');
+    e.codigo = 'ja_votou';
+    throw e;
+  }
+  const votos = JSON.parse(localStorage.getItem('urna_votos_demo') || '[]');
+  votos.push(voto);
+  localStorage.setItem('urna_votos_demo', JSON.stringify(votos));
+  const telefones = lerTelefonesVotaramDemo();
+  telefones.push(voto.telefone);
+  localStorage.setItem('urna_telefones_votaram_demo', JSON.stringify(telefones));
+  console.log('Voto salvo em localStorage (modo demo)');
+}
+
+// --------------------------------------------------------------------------
 // Confirmação final
 // --------------------------------------------------------------------------
 async function confirmarVoto() {
   if (!candidatoCoordenacao || !candidatoVice) return;
+  if (!telefoneAtual) { mostrarTela(telaEleitor); return; }
 
   const voto = {
+    telefone: telefoneAtual,
     coordenacao: candidatoCoordenacao.numero,
     coordenacaoNome: candidatoCoordenacao.nome,
     vice: candidatoVice.numero,
@@ -275,27 +396,44 @@ async function confirmarVoto() {
 
   console.log('Confirmando voto:', voto);
 
+  if (btnConfirmar) btnConfirmar.disabled = true;
   try {
-    if (CONFIG.BACKEND_URL) {
-      const resposta = await fetch(CONFIG.BACKEND_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(voto),
-      });
-      if (!resposta.ok) throw new Error('Erro ao enviar voto');
+    if (firebaseConfigurado()) {
+      // Firebase escolhido: NÃO cair no modo demo se não conectou.
+      if (!usarFirebase()) {
+        throw new Error('Firebase configurado, mas não foi possível conectar. Voto NÃO foi salvo.');
+      }
+      // gravação atômica + voto único; só segue se o Firestore CONFIRMAR
+      await window.UrnaFirebase.votar(voto);
     } else {
-      const votos = JSON.parse(localStorage.getItem('urna_votos_demo') || '[]');
-      votos.push(voto);
-      localStorage.setItem('urna_votos_demo', JSON.stringify(votos));
-      console.log('Voto salvo em localStorage (modo demo)');
+      salvarVotoDemo(voto);
     }
 
     mostrarResultadoFinal(true);
   } catch (erro) {
     console.error(erro);
-    alert('Erro ao computar o voto. Tente novamente.');
-    mostrarTela(telaConfirmacao);
+    if (erro && (erro.codigo === 'ja_votou' || erro.codigo === 'nao_cadastrado')) {
+      const msg = erro.codigo === 'ja_votou'
+        ? 'Este telefone já votou. Não é possível votar duas vezes.'
+        : 'Este telefone não está cadastrado. Procure a organização.';
+      alert(msg);
+      telefoneAtual = null;
+      candidatoCoordenacao = null;
+      candidatoVice = null;
+      if (btnConfirmarCoordenacao) { btnConfirmarCoordenacao.disabled = true; }
+      if (btnConfirmarVice) { btnConfirmarVice.disabled = true; }
+      renderizarEtapaCoordenacao();
+      renderizarEtapaVice();
+      mostrarTela(telaEleitor);
+    } else {
+      // NÃO mascara falha: só dizemos sucesso se o voto foi registrado.
+      alert('Não foi possível confirmar que seu voto foi registrado.' +
+        (erro && erro.message ? '\n' + erro.message : '') +
+        '\nConfira a conexão e tente novamente.');
+      mostrarTela(telaConfirmacao);
+    }
+  } finally {
+    if (btnConfirmar) btnConfirmar.disabled = false;
   }
 }
 
@@ -303,7 +441,7 @@ async function confirmarVoto() {
 // Telas
 // --------------------------------------------------------------------------
 function mostrarTela(tela) {
-  [telaCoordenacao, telaVice, telaConfirmacao, telaFim].forEach((t) => {
+  [telaEleitor, telaCoordenacao, telaVice, telaConfirmacao, telaFim].forEach((t) => {
     if (t) t.classList.remove('active');
   });
   if (tela) tela.classList.add('active');
