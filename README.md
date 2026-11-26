@@ -41,7 +41,7 @@ urna_eletronica/assets/logo-sao-jose.png
 
 Recomendação: imagem PNG quadrada, fundo transparente, mínimo 500×500 px.
 
-## 🚀 Como colocar no ar
+### 🚀 Como colocar no ar
 
 ### 1. Publique no GitHub Pages
 
